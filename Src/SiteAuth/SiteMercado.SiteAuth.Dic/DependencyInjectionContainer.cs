@@ -7,7 +7,7 @@ using SiteMercado.SiteAuth.Application.Products.Mappings;
 using SiteMercado.SiteAuth.Application.Products.Queries;
 using SiteMercado.SiteAuth.Persistence;
 
-namespace SiteMercado.SiteAuth.Ioc
+namespace SiteMercado.SiteAuth.Dic
 {
     /// <summary>
     /// DependencyInjectionContainer class
@@ -19,7 +19,7 @@ namespace SiteMercado.SiteAuth.Ioc
         /// </summary>
         /// <param name="services"></param>
         /// <param name="Configuration"></param>
-        public static void ServiceIoc(IServiceCollection services, IConfiguration Configuration)
+        public static void InitializeApplicationServices(IServiceCollection services, IConfiguration Configuration)
         {
             services.AddScoped<IProductsCommands, ProductsCommands>();
 

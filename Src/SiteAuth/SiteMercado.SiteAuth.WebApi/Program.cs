@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using SiteMercado.SiteAuth.WebApi;
 
-namespace SiteMercado.SiteAuth.WebApi
+namespace MultiChannel.Web.Api
 {
     /// <summary>
     /// Program.
@@ -14,16 +16,26 @@ namespace SiteMercado.SiteAuth.WebApi
         /// <param name="args">args.</param>
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
         /// <summary>
-        /// Create WebHostBuilder.
+        /// CreateHostBuilder.
         /// </summary>
         /// <param name="args">args.</param>
-        /// <returns>IWebHostBuilder.</returns>
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        /// <returns>IHostBuilder.</returns>
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((hostContext, builder) =>
+                {
+                    if (hostContext.HostingEnvironment.IsDevelopment())
+                    {
+                        builder.AddUserSecrets<Program>();
+                    }
+                })
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }

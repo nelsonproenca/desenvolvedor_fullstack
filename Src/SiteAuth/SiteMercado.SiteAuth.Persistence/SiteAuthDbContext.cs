@@ -31,6 +31,17 @@ namespace SiteMercado.SiteAuth.Persistence
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SiteAuthDbContext"/> class.
+        /// </summary>
+        /// <param name="options">DbContext options.</param>
+        /// <param name="connectionString">connectionString.</param>
+        public SiteAuthDbContext(DbContextOptions<SiteAuthDbContext> options, string connectionString)
+            : base(options)
+        {
+            this.connectionString = connectionString;
+        }
+
         /// <inheritdoc/>
         public DbSet<Product> Products { get; set; }
 
@@ -62,7 +73,7 @@ namespace SiteMercado.SiteAuth.Persistence
             modelBuilder.Entity<Product>().HasKey(key => key.Id);
 
             modelBuilder.Entity<Product>().Property(p => p.Description).HasColumnType("varchar (2048)");
-            modelBuilder.Entity<Product>().Property(p => p.ImageUrl).HasColumnType("varchar (MAX)");
+            modelBuilder.Entity<Product>().Property(p => p.ImageUrl).HasColumnType("varchar (2048)");
             modelBuilder.Entity<Product>().Property(p => p.Price).HasColumnType("decimal (12, 4)");
         }
     }

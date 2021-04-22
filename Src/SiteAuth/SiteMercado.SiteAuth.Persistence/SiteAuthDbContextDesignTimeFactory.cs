@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
 namespace SiteMercado.SiteAuth.Persistence
@@ -7,7 +8,7 @@ namespace SiteMercado.SiteAuth.Persistence
     /// <summary>
     /// SiteAuth dbcontext design time factory class.
     /// </summary>
-    public class SiteAuthDbContextDesignTimeFactory
+    public class SiteAuthDbContextDesignTimeFactory : IDesignTimeDbContextFactory<SiteAuthDbContext>
     {
         private const string ConnectionName = "SiteAuthConnectionString";
 
@@ -29,7 +30,7 @@ namespace SiteMercado.SiteAuth.Persistence
 
             optionsBuilder.UseSqlServer(connString);
 
-            return new SiteAuthDbContext(optionsBuilder.Options, configuration);
+            return new SiteAuthDbContext(optionsBuilder.Options, connString);
         }
     }
 }

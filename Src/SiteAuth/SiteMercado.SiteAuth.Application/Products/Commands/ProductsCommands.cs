@@ -1,8 +1,12 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using SiteMercado.SiteAuth.Application.Products.Models;
+using SiteMercado.SiteAuth.Application.Products.Validators;
+using SiteMercado.SiteAuth.Domain.Entities;
 using SiteMercado.SiteAuth.Persistence;
 
 namespace SiteMercado.SiteAuth.Application.Products.Commands
@@ -30,9 +34,19 @@ namespace SiteMercado.SiteAuth.Application.Products.Commands
         }
 
         /// <inheritdoc/>
-        public Task<ProductModel> Create(ProductModel product)
-        {
-            throw new System.NotImplementedException();
+        public async Task<ProductModel> CreateAsync(ProductModel product)
+        {            
+            await Utils.Utils.ValidateCommandAsync(new ProductModelValidator(), product);
+
+            var newProduct = mapper.Map<Product>(product);
+
+            context.Products.Add(newProduct);
+
+            await context.SaveChangesAsync();
+
+            var model = mapper.Map<ProductModel>(newProduct);
+
+            return model;
         }
 
         /// <inheritdoc/>

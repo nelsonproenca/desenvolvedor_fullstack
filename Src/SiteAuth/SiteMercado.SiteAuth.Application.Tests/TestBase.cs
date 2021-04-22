@@ -28,8 +28,6 @@ namespace SiteMercado.SiteAuth.Application.Tests
         public TestBase()
         {
             inMemorySqlite = new SqliteConnection("Data Source=:memory:");
-
-            // InitializeAutoMapper();
         }
 
         /// <summary>

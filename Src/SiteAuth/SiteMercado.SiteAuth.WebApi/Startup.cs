@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SiteMercado.SiteAuth.Dic;
 using SiteMercado.SiteAuth.WebApi.Filters;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -39,12 +40,14 @@ namespace SiteMercado.SiteAuth.WebApi
             {
                 options.Filters.Add(typeof(ErrorHandlerAttribute));
             })
-           .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+           .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddMvcCore(options =>
             {
                 options.Filters.Add(typeof(ErrorHandlerAttribute));
             });
+
+            DependencyInjectionContainer.InitializeApplicationServices(services, Configuration);
 
             // Swagger
             services.AddSwaggerGen(options =>
@@ -69,20 +72,9 @@ namespace SiteMercado.SiteAuth.WebApi
         /// </summary>
         /// <param name="app">app.</param>
         /// <param name="env">env.</param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
             app.UseHttpsRedirection();
-            app.UseMvc();
 
             app.UseSwagger();
 

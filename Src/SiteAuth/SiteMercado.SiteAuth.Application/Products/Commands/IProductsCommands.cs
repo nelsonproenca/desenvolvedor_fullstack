@@ -13,7 +13,7 @@ namespace SiteMercado.SiteAuth.Application.Products.Commands
         /// </summary>
         /// <param name="product">ProductModel object.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<ProductModel> Create(ProductModel product);
+        Task<ProductModel> CreateAsync(ProductModel product);
 
         /// <summary>
         /// Delete a product.
