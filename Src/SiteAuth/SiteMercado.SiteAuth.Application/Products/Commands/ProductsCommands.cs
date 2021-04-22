@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SiteMercado.SiteAuth.Application.Products.Models;
 using SiteMercado.SiteAuth.Application.Products.Validators;
@@ -50,15 +51,36 @@ namespace SiteMercado.SiteAuth.Application.Products.Commands
         }
 
         /// <inheritdoc/>
-        public Task<bool> Delete(int productId)
+        public async Task<bool> DeleteAsync(int productId)
         {
-            throw new System.NotImplementedException();
+            var productSearch = await context.Products?.SingleOrDefaultAsync(prv => prv.Id == productId);
+
+            productSearch.IsDeleted = true;
+
+            var result = await context.SaveChangesAsync();
+
+            return result > 0;
         }
 
         /// <inheritdoc/>
-        public Task<bool> Update(ProductModel updatedProduct)
+        public async Task<ProductModel> UpdateAsync(int productId, ProductModel updatedProduct)
         {
-            throw new System.NotImplementedException();
+            await Utils.Utils.ValidateCommandAsync(new ProductModelValidator(), updatedProduct);
+
+            var productSearch = await context.Products?.SingleOrDefaultAsync(prod => prod.Id == productId);
+
+            if (productSearch == null)
+            {
+                return null;
+            }
+
+            var product = mapper.Map(updatedProduct, productSearch);
+
+            await context.SaveChangesAsync();
+
+            var model = mapper.Map<ProductModel>(product);
+
+            return model;
         }
     }
 }

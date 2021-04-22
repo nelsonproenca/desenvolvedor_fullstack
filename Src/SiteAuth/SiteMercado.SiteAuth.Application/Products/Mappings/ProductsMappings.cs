@@ -13,7 +13,9 @@ namespace SiteMercado.SiteAuth.Application.Products.Mappings
         /// </summary>
         public ProductsMappings()
         {
-            CreateMap<Domain.Entities.Product, ProductModel>().ReverseMap();
+            CreateMap<Domain.Entities.Product, ProductModel>()
+                .ReverseMap()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
         }
     }
 }
