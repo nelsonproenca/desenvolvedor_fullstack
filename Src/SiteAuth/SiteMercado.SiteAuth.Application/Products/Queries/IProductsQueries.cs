@@ -12,14 +12,14 @@ namespace SiteMercado.SiteAuth.Application.Products.Queries
         /// <summary>
         /// Get one product.
         /// </summary>
-        /// <param name="product">Product model.</param>
+        /// <param name="productId">Product Id.</param>
         /// <returns>A <see cref="Task"/> and <see cref="ProductModel"/> representing the asynchronous operation.</returns>
-        Task<ProductModel> GetOne(ProductModel product);
+        Task<ProductModel> GetOneAsync(int productId);
 
         /// <summary>
         /// Get All products.
         /// </summary>
         /// <returns>A <see cref="Task"/> and <see cref="ProductModel"/> representing the asynchronous operation.</returns>
-        Task<IEnumerable<ProductModel>> GetAll();
+        Task<IEnumerable<ProductModel>> GetAllAsync();
     }
 }

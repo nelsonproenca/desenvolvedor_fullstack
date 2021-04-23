@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <UserSecretsId>834acdfd-2594-42ea-b6f8-5bbea5d85fa6</UserSecretsId>
   </PropertyGroup>
   
   <Import Project="..\..\Build\SiteMercado.Build.proj" />

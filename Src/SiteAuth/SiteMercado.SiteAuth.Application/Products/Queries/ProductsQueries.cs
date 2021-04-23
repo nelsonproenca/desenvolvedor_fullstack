@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SiteMercado.SiteAuth.Application.Products.Models;
+using SiteMercado.SiteAuth.Domain.Entities;
 using SiteMercado.SiteAuth.Persistence;
 
 namespace SiteMercado.SiteAuth.Application.Products.Queries
@@ -30,15 +34,31 @@ namespace SiteMercado.SiteAuth.Application.Products.Queries
         }
 
         /// <inheritdoc/>
-        public Task<IEnumerable<ProductModel>> GetAll()
+        public async Task<IEnumerable<ProductModel>> GetAllAsync()
         {
-            throw new System.NotImplementedException();
+            IQueryable<Product> products = context.Products.AsQueryable();
+
+            var result = await products
+                .ProjectTo<ProductModel>(mapper.ConfigurationProvider)
+                .AsNoTracking()
+                .ToListAsync();
+
+            return result;
         }
 
         /// <inheritdoc/>
-        public Task<ProductModel> GetOne(ProductModel product)
+        public async Task<ProductModel> GetOneAsync(int productId)
         {
-            throw new System.NotImplementedException();
+            var product = await context.Products?.FirstOrDefaultAsync(eml => eml.Id == productId);
+
+            if (product == null)
+            {
+                return null;
+            }
+
+            var result = mapper.Map<ProductModel>(product);
+
+            return result;
         }
     }
 }
